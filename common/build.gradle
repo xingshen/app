@@ -1,0 +1,99 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'com.novoda.bintray-release'//上传jcenter
+android {
+    compileSdkVersion 23
+    buildToolsVersion '25.0.0'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 17
+        versionCode 1
+        versionName "1.0"
+
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ moduleName : project.getName() ]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+}
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.aspectj:aspectjtools:1.8.6'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile('com.jakewharton:butterknife:7.0.1') {
+        exclude module: 'xpp3'
+    }
+    compile project(':core')
+    compile 'org.aspectj:aspectjrt:1.8.6'
+    compile 'com.alibaba:arouter-api:1.3.1'
+    annotationProcessor 'com.alibaba:arouter-compiler:1.1.4'
+}
+
+////上传jcenter
+//publish {
+//    userOrg = 'gang'//bintray.com用户名
+//    groupId = 'com.steptowin'//jcenter上的路径
+//    artifactId = 'zg-common'//项目名称
+//    publishVersion = "1.0.3"//版本号
+//    desc = 'Oh hi, this is a nice description for a project, right?'//描述，不重要
+//    website = 'http://git.oschina.net/xingshen58/learn'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+//}
+
+
+//android.libraryVariants.all { variant ->
+//    LibraryPlugin plugin = project.plugins.getPlugin(LibraryPlugin)
+//    JavaCompile javaCompile = variant.javaCompile
+//    javaCompile.doLast {
+//        String[] args = ["-showWeaveInfo",
+//                         "-1.5",
+//                         "-inpath", javaCompile.destinationDir.toString(),
+//                         "-aspectpath", javaCompile.classpath.asPath,
+//                         "-d", javaCompile.destinationDir.toString(),
+//                         "-classpath", javaCompile.classpath.asPath,
+//                         "-bootclasspath", plugin.project.android.bootClasspath.join(
+//                File.pathSeparator)]
+//
+//        MessageHandler handler = new MessageHandler(true);
+//        new Main().run(args, handler)
+//
+//        def log = project.logger
+//        for (IMessage message : handler.getMessages(null, true)) {
+//            switch (message.getKind()) {
+//                case IMessage.ABORT:
+//                case IMessage.ERROR:
+//                case IMessage.FAIL:
+//                    log.error message.message, message.thrown
+//                    break;
+//                case IMessage.WARNING:
+//                case IMessage.INFO:
+//                    log.info message.message, message.thrown
+//                    break;
+//                case IMessage.DEBUG:
+//                    log.debug message.message, message.thrown
+//                    break;
+//            }
+//        }
+//    }
+//}

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+                android:clickable="true"
+    android:background="@color/white">
+
+    <Button
+        android:id="@+id/btnSelectFirstVideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="选择第一个视频文件" />
+
+    <EditText
+        android:id="@+id/editText_first"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/btnSelectFirstVideo" />
+
+    <Button
+        android:id="@+id/btnSelectSecondVideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editText_first"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:text="选择第二个视频文件" />
+
+
+    <EditText
+        android:id="@+id/editText_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/btnSelectSecondVideo" />
+    <Button
+        android:id="@+id/btn2concat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editText_second"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:text="开始合并" />v
+
+
+</RelativeLayout>

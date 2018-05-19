@@ -1,0 +1,65 @@
+package com.steptowin.common.adapter;
+
+import android.content.Context;
+import android.support.annotation.DrawableRes;
+
+
+/**
+ * desc:使用本地资源适配菜单列表
+ * author：zg
+ * date:2016/4/29 0029
+ * time:上午 11:19
+ */
+public abstract class MenuWithResAdapter extends SimpleViewHolderAdapter<MenuWithResAdapter.IMenuItem> {
+
+
+    public MenuWithResAdapter(Context context) {
+        super(context);
+    }
+
+    public interface IMenuItem {
+
+        int getId();
+
+        @DrawableRes
+        int getItemIcon();
+
+        CharSequence getItemText();
+
+    }
+
+    public static class SimpleMenuItem implements IMenuItem {
+        int id;
+
+        @DrawableRes
+        int icon;
+
+        CharSequence text;
+
+        private SimpleMenuItem(int id,int icon,CharSequence text){
+            this.id = id;
+            this.icon = icon;
+            this.text = text;
+        }
+
+        public static IMenuItem createItem(int id,int icon,CharSequence text){
+            return new SimpleMenuItem(id,icon,text);
+        }
+        @Override
+        public int getId() {
+            return id;
+        }
+
+        @Override
+        public int getItemIcon() {
+            return icon;
+        }
+
+        @Override
+        public CharSequence getItemText() {
+            return text;
+        }
+    }
+
+
+}

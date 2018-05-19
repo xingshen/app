@@ -1,0 +1,73 @@
+package com.steptowin.common.adapter;
+
+import android.content.Context;
+import android.support.annotation.LayoutRes;
+import android.util.SparseArray;
+import android.view.View;
+import android.view.ViewGroup;
+
+/**
+ * desc:对适配器进一步封装,减少adapter和viewholder的编写
+ * author：zg
+ * date:16/6/16
+ * time:下午4:30
+ */
+public abstract class SimpleViewHolderAdapter<T> extends ViewHolderAdapter<SimpleViewHolderAdapter.SimpleViewHolder, T> {
+
+    public SimpleViewHolderAdapter(Context context) {
+        super(context);
+    }
+
+    public
+    @LayoutRes
+    int getItemLayoutRes(ViewGroup parent, int position) {
+        return 0;
+    }
+
+    public View getItemLayout(ViewGroup parent, int position) {
+        return new View(parent.getContext());
+    }
+
+    @Override
+    public SimpleViewHolderAdapter.SimpleViewHolder onCreateViewHolder(ViewGroup parent, int position) {
+        if (getItemLayoutRes(parent, position) > 0) {
+            return new SimpleViewHolder(mInflater.inflate(getItemLayoutRes(parent, position), null));
+        }
+        return new SimpleViewHolder(getItemLayout(parent, position));
+    }
+
+    public static class SimpleViewHolder extends ViewHolderAdapter.ViewHolder {
+        private final SparseArray<View> mViews;
+
+        public SimpleViewHolder(View view) {
+            super(view);
+            this.mViews = new SparseArray<View>();
+        }
+
+        public <V extends View> V getView(int id) {
+            if (null == mViews.get(id)) {
+                View view = getConvertView().findViewById(id);
+                mViews.put(id, view);
+            }
+            return (V)(mViews.get(id));
+        }
+
+        public <V extends View> V getView(Class<V> clazz, int id) {
+            if (null == mViews.get(id)) {
+                View view = getConvertView().findViewById(id);
+                mViews.put(id, view);
+            }
+            return clazz.cast(mViews.get(id));
+        }
+
+        /**
+         * 适用自定义控件
+         * @param clazz
+         * @param <V>
+         * @return
+         */
+        public <V extends View> V getConvertView(Class<V> clazz) {
+            return clazz.cast(getConvertView());
+        }
+    }
+}

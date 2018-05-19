@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <Button
+        android:id="@+id/btn_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="behavior"/>
+
+    <Button
+        android:id="@+id/btn_appbar_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="top折叠效果"/>
+
+    <Button
+        android:id="@+id/btn_appbar_fade_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="top折叠渐变效果"/>
+
+    <Button
+        android:id="@+id/btn_appbar_head_fade_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="head渐变"/>
+
+    <Button
+        android:id="@+id/btn_appbar_float_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="移动悬停效果"/>
+
+    <Button
+        android:id="@+id/btn_appbar_top_enteralways_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="顶部快速返回效果"/>
+
+    <Button
+        android:id="@+id/btn_appbar_float_tab_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="移动悬停tab切换效果"/>
+
+</LinearLayout>

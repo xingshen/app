@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><root><user_id><![CDATA[ababa]]></user_id><user_name><![CDATA[name1]]></user_name><user_name><![CDATA[name2]]></user_name><status><![CDATA[200]]></status><message><![CDATA[操作成功]]></message></root>

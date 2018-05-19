@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/activitygroupcompat" vcs="svn" />
+    <mapping directory="$PROJECT_DIR$/common" vcs="svn" />
+    <mapping directory="$PROJECT_DIR$/core" vcs="svn" />
+    <mapping directory="$PROJECT_DIR$/ffmpeg4android_lib" vcs="svn" />
+    <mapping directory="$PROJECT_DIR$/firstbundle" vcs="svn" />
+    <mapping directory="$PROJECT_DIR$/minivideo" vcs="svn" />
+    <mapping directory="$PROJECT_DIR$/secondbundle" vcs="svn" />
+  </component>
+</project>

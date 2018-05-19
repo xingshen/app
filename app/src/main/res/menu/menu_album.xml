@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_sure"
+        android:orderInCategory="80"
+        android:title="@string/action_sure"
+        app:showAsAction="ifRoom" />
+
+
+    <item
+        android:id="@+id/action_albums"
+        android:orderInCategory="80"
+        android:title="@string/action_albums"
+        app:showAsAction="ifRoom" />
+
+
+</menu>

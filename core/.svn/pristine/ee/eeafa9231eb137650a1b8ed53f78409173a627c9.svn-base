@@ -1,0 +1,92 @@
+package com.steptowin.core.http.retrofit;
+
+import android.content.Context;
+
+import com.steptowin.core.http.common.PersistentCookieStore;
+
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+
+import okhttp3.Interceptor;
+import okhttp3.JavaNetCookieJar;
+import okhttp3.OkHttpClient;
+import retrofit2.Converter;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+/**
+ * @Desc: 需要在程序启动时，进行初始化操作。
+ * 步骤：1、实例化{@link #getInstance()}  2、设置系统域名{@link #domain(String)}
+ * 3、cookie自动化管理{@link #addCookieManager(Context)}(可选)  4、创建retrofit实例{@link #build()}
+ * <p>
+ * 文件上传,下载使用{@link com.steptowin.core.http.okhttp.OkHttpRequest}
+ * @Author: zg
+ * @Time: 2016-03-30前
+ */
+public class RetrofitClient {
+    private static RetrofitClient instance = new RetrofitClient();
+
+    private OkHttpClient client;
+    private Retrofit restAdapter;
+    private Retrofit.Builder restBuilder;
+
+    private RetrofitClient() {
+        restBuilder = new Retrofit.Builder();
+        client = new OkHttpClient();
+        restBuilder.addConverterFactory(GsonConverterFactory.create());
+        restBuilder.addCallAdapterFactory(RxJavaCallAdapterFactory.create());
+    }
+
+    public static RetrofitClient getInstance() {
+        if (null == instance)
+            instance = new RetrofitClient();
+        return instance;
+    }
+
+    public RetrofitClient addCookieManager(Context context) {
+        //添加Cookie管理
+        CookieHandler cookieHandler = new CookieManager(new PersistentCookieStore(context),
+                CookiePolicy.ACCEPT_ALL);
+        client = client.newBuilder().cookieJar(new JavaNetCookieJar(cookieHandler)).build();
+        return instance;
+    }
+
+    /**
+     * @Desc: 设定系统域名，注意：如果非第一次调用，则要继续调用{@link #build()}重新初始化
+     * @Author: zg
+     * @Time: 2016/1/19 16:33
+     */
+    public RetrofitClient domain(String domain) throws IllegalArgumentException {
+        restBuilder.baseUrl(domain);
+        return instance;
+    }
+
+    public RetrofitClient converter(Converter.Factory converter) {
+        restBuilder.addConverterFactory(converter);
+        return instance;
+    }
+
+    public RetrofitClient addInterceptor(Interceptor interceptor) {
+        client = client.newBuilder().addInterceptor(interceptor).build();
+        return instance;
+    }
+
+    public Retrofit build() {
+        restBuilder.client(client);
+        restAdapter = restBuilder.build();
+        return restAdapter;
+    }
+
+    /**
+     * @Desc: 必须要在执行过{}{@link #build()}后调用
+     * @Author: zg
+     * @Time: 2016/1/19 16:32
+     */
+    public static <T> T createApi(Class<T> clazz) {
+        if (null == getInstance().restAdapter)
+            throw new ExceptionInInitializerError("restAdapter 并没有初始化");
+        return getInstance().restAdapter.create(clazz);
+    }
+}

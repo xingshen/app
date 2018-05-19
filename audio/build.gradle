@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'com.novoda.bintray-release'//上传jcenter
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "25.0.0"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+}
+
+
+////上传jcenter
+//publish {
+//    userOrg = 'gang'//bintray.com用户名
+//    groupId = 'com.steptowin'//jcenter上的路径
+//    artifactId = 'zg-audio'//项目名称
+//    publishVersion = "1.0.0"//版本号
+//    desc = 'Oh hi, this is a nice description for a project, right?'//描述，不重要
+//    website = 'http://git.oschina.net/xingshen58/learn'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+//}

@@ -1,0 +1,190 @@
+import org.aspectj.bridge.IMessage
+import org.aspectj.bridge.MessageHandler
+import org.aspectj.tools.ajc.Main
+
+group = 'com.taobao.android.atlasdemo'
+version = getEnvValue("versionName", "1.0.0");
+def apVersion = getEnvValue("apVersion", "");
+
+
+//apply plugin: 'com.android.application'
+//apply plugin: 'com.jakewharton.hugo'
+
+apply plugin: 'com.android.application'
+//apply plugin: 'com.taobao.atlas'
+//apply plugin: 'com.taobao.atlas.dexpatch'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '25.0.0'
+
+    defaultConfig {
+        applicationId "com.steptowin.app.view.activity"
+        minSdkVersion 16
+        targetSdkVersion 17
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        ndk{
+            abiFilter "armeabi-v7a"
+        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ moduleName : project.getName() ]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/rxjava.properties'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    configurations {
+        all*.exclude group: 'com.android.support', module: 'multidex'
+    }
+
+}
+
+
+String getEnvValue(key, defValue) {
+    def val = System.getProperty(key);
+    if (null != val) {
+        return val;
+    }
+    val = System.getenv(key);
+    if (null != val) {
+        return val;
+    }
+    return defValue;
+}
+
+
+//atlas {
+//
+//    atlasEnabled true
+//    tBuildConfig {
+//        autoStartBundles = ['com.steptowin.firstbundle'] //自启动bundle配置
+////        outOfApkBundles = ['remotebundle']
+////        preLaunch = 'com.taobao.demo.DemoPreLaunch'
+//        classInject false
+////        dataBindingBundles = ['com.taobao.databindbundle']
+//    }
+//
+//    manifestOptions {
+//        addAtlasProxyComponents true
+//    }
+//
+//
+//    patchConfigs {
+//        debug {
+//            createTPatch true
+//        }
+//    }
+//
+//
+//    buildTypes {
+//        debug {
+//            if (apVersion) {
+//                baseApDependency "com.taobao.android.atlasdemo:AP-debug:${apVersion}@ap"
+//                patchConfig patchConfigs.debug
+//            }
+//        }
+//    }
+//}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.aspectj:aspectjtools:1.8.1'
+    }
+}
+
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':common')
+    compile 'com.zhy:base-adapter:2.0.0'
+    compile project(':audio')
+    compile 'com.journeyapps:zxing-android-embedded:3.3.0@aar'
+    compile 'com.google.zxing:core:3.2.1'
+    compile project(':code')
+    compile 'com.android.support:cardview-v7:+'
+    compile 'com.android.support:design:23.3.0'
+    compile project(':ffmpeg4android_lib')
+    compile project(':minivideo')
+    compile 'org.aspectj:aspectjrt:1.8.1'
+    annotationProcessor 'com.alibaba:arouter-compiler:1.1.4'
+    compile project(':albums')
+    compile 'com.github.adrielcafe:AndroidAudioConverter:0.0.8'
+}
+
+
+//task clean(type: Exec) {
+//    ext.lockhunter = '\"C:\\Program Files\\LockHunter\\LockHunter.exe\"'
+//    def buildDir = file(new File("build"))
+//    commandLine 'cmd', "$lockhunter", '/delete', '/silent', buildDir
+//}
+
+
+final def log = project.logger
+final def variants = project.android.applicationVariants
+
+variants.all { variant ->
+    if (!variant.buildType.isDebuggable()) {
+        log.debug("Skipping non-debuggable build type '${variant.buildType.name}'.")
+        return;
+    }
+
+    JavaCompile javaCompile = variant.javaCompile
+    javaCompile.doLast {
+        String[] args = ["-showWeaveInfo",
+                         "-1.5",
+                         "-inpath", javaCompile.destinationDir.toString(),
+                         "-aspectpath", javaCompile.classpath.asPath,
+                         "-d", javaCompile.destinationDir.toString(),
+                         "-classpath", javaCompile.classpath.asPath,
+                         "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
+        log.debug "ajc args: " + Arrays.toString(args)
+
+        MessageHandler handler = new MessageHandler(true);
+        new Main().run(args, handler);
+        for (IMessage message : handler.getMessages(null, true)) {
+            switch (message.getKind()) {
+                case IMessage.ABORT:
+                case IMessage.ERROR:
+                case IMessage.FAIL:
+                    log.error message.message, message.thrown
+                    break;
+                case IMessage.WARNING:
+                    log.warn message.message, message.thrown
+                    break;
+                case IMessage.INFO:
+                    log.info message.message, message.thrown
+                    break;
+                case IMessage.DEBUG:
+                    log.debug message.message, message.thrown
+                    break;
+            }
+        }
+    }
+}

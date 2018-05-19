@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    tools:showIn="@layout/fragment_main"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="批量添加联系人" />
+
+    <Button
+        android:id="@+id/btn_db"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DB" />
+
+    <Button
+        android:id="@+id/btn_test_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="测试fragment" />
+
+
+    <Button
+        android:id="@+id/btn_kill_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="go kill other"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/btn_albums"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="本地相册" />
+
+    <Button
+        android:id="@+id/btn_audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="音频" />
+
+    <Button
+        android:id="@+id/btn_http"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="http" />
+
+    <Button
+        android:id="@+id/btn_thread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="线程测试"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/btn_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="扫码"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/btn_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="eventbus"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/btn_app_controller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="应用市场"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/btn_mutil_add_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="批量添加联系人" />
+
+    <Button
+        android:text="学习coor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_learn_coor"
+        android:visibility="gone"/>
+
+    <Button
+        android:text="视频处理"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_compress_video" />
+
+    <Button
+        android:text="service"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_service" />
+    <Button
+        android:text="atlas模块化"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_modules" />
+    <Button
+        android:text="arouter模块化"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_aroute_modules" />
+
+
+
+</LinearLayout>

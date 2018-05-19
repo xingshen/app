@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="event_album_switch" type="id"/>
+    <item name="event_album_sure" type="id"/>
+    <item name="event_album_choose_one" type="id"/>
+
+    <item name="event_test1" type="id"/>
+    <item name="event_test2" type="id"/>
+
+</resources>

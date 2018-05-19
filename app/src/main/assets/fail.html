@@ -1,0 +1,71 @@
+﻿<html>
+<title>糟糕，页面加载失败了</title>
+<style type="text/css">
+.back{border:1px dashed #000; }
+body{text-align:center;}
+
+ .failtip{
+  
+font-size: 15;
+padding: 10px;
+color: #999999;
+text-align:center;
+ }
+
+.failtext{
+font-size: 15;
+margin: 10px;
+padding: 10px;
+border:1px solid #F43530; 
+color: #F43530;
+margin:0 auto; padding:0 auto; text-align:center;
+height: auto;
+width: 100px;
+border-radius:10px;
+}
+
+
+.center{
+padding: 10px;
+margin:0 auto; padding:0 auto; text-align:center;
+}
+
+</style>
+
+<script>
+    
+
+    function reload(){
+      //alert("重新加载");
+      __appDelegate.reload();
+    }
+
+    function closepage(){
+      //alert("关闭");
+      __appDelegate.close();
+    }
+
+
+</script>
+
+<body>
+
+   <img style="margin-top: 50px;" src=".\image\nonetwork.png" alt="picture" width="169px" height="124px" />
+   <div   class="failtip">
+      糟糕，连接失败
+   </div>
+   
+   <div  onclick="reload()" class="failtext">
+     <div  style="margin:0 auto; padding:0 auto; text-align:center;">
+        重新加载
+     </div>
+   </div>
+
+   <div onclick="closepage()"  style="margin-top:10px;"  class="failtext">
+       <div  style="margin:0 auto; padding:0 auto; text-align:center;">
+          退出
+       </div>
+   </div>
+</div>
+</body>
+</html>

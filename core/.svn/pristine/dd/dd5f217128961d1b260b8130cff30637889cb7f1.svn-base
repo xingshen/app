@@ -1,0 +1,66 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'com.novoda.bintray-release'//上传jcenter
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 17
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'com.android.support:support-annotations:23.1.1'
+    compile 'com.google.code.gson:gson:2.5'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'org.apache.commons:commons-lang3:3.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.4.1'
+}
+
+
+//上传jcenter
+//publish {
+//    userOrg = 'gang'//bintray.com用户名
+//    groupId = 'com.steptowin'//jcenter上的路径
+//    artifactId = 'zg-core'//项目名称
+//    publishVersion = "1.0.1"//版本号
+//    desc = 'Oh hi, this is a nice description for a project, right?'//描述，不重要
+//    website = 'http://git.oschina.net/xingshen58/learn'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+//}
+
+
+task releaseJar(type: Copy, dependsOn: 'build') {
+    from('build/intermediates/bundles/release/')
+    into('../releases')
+    include('classes.jar')
+    rename('classes.jar', 'core-1.3.jar')
+}

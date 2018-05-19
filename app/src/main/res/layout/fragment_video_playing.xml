@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                >
+
+    <VideoView
+        android:id="@+id/vv_test1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/vv_test1"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical">
+
+
+
+        <Button
+            android:id="@+id/btn_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始"/>
+        <SeekBar
+            android:id="@+id/sb_progress"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:progress="0"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_progress"
+        android:text="1"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/holo_red_dark"/>
+
+</RelativeLayout>

@@ -1,0 +1,229 @@
+package com.steptowin.common.base;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.view.Window;
+
+import com.steptowin.common.base.delegate.ActivityDelegate;
+import com.steptowin.common.base.delegate.AppContextDelegate;
+import com.steptowin.common.base.delegate.AppContextDelegateImp;
+import com.steptowin.common.base.delegate.ApplicationDelegate;
+import com.steptowin.common.base.mvp.lce.ErrorView;
+import com.steptowin.common.base.mvp.lce.LoadingView;
+import com.steptowin.common.base.mvp.lce.MvpLceActivity;
+import com.steptowin.core.event.Event;
+import com.steptowin.core.event.EventSubscriber;
+import com.steptowin.core.event.EventWrapper;
+import com.steptowin.core.http.retrofit.NetWorkManager;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
+
+import butterknife.ButterKnife;
+
+/**
+ * @Desc: {@link Activity}基类,为子类提供统一接口。基于mvp
+ * 添加对于eventbus的支持
+ * @Author: zg
+ * @Time: 2015/12/21 18:15
+ */
+public abstract class BaseActivity<M, V extends BaseView<M>, P extends BasePresenter<V>> extends MvpLceActivity<M, V, P> implements BaseView<M>, AppContextDelegate, EventSubscriber {
+    AppContextDelegate appContextDelegate;
+
+    /**
+     * @desc 布局文件ID
+     * <p/>
+     * edit by zg
+     */
+    protected abstract
+    @LayoutRes
+    int getLayoutResId();
+
+    /**
+     * @desc 调用{@link #replaceFragment(Fragment)}和{@link #addFragment(Fragment)}
+     * 时,会使用此方法返回的id
+     * <p/>
+     * edit by zg
+     */
+    protected
+    @IdRes
+    int getFragmentContainerId() {
+        return 0;
+    }
+
+    protected BaseFragment getFirstFragment() {
+        return null;
+    }
+
+    @Override
+    public LoadingView createLoadingView() {
+        return null;
+    }
+
+    @Override
+    public ErrorView createErrorView() {
+        return null;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        setContentView(getLayoutResId());
+        ButterKnife.bind(this);
+        appContextDelegate = AppContextDelegateImp.create(this);
+
+        if (null != getPresenter() && null != getIntent().getExtras())
+            getPresenter().handleArguments(getIntent().getExtras());
+
+        if (null != getFirstFragment() && null == savedInstanceState)
+            addFragment(getFirstFragment());
+
+        if (eventEnable())
+            EventWrapper.register(this);
+    }
+
+    @Override
+    public AppContextDelegate getAppContextDelegate() {
+        return appContextDelegate;
+    }
+
+    @Override
+    public BaseActivity getHoldingActivity() {
+        return this;
+    }
+
+    @Override
+    public ActivityDelegate getActivityDelegate() {
+        return appContextDelegate.getActivityDelegate();
+    }
+
+    @Override
+    public ApplicationDelegate getApplicationDelegate() {
+        return appContextDelegate.getApplicationDelegate();
+    }
+
+    @Override
+    public FragmentManagerDelegate getChildFragmentManagerDelegate(Fragment fragment) {
+        return appContextDelegate.getChildFragmentManagerDelegate(fragment);
+    }
+
+    @Override
+    public FragmentManagerDelegate getFragmentManagerDelegate() {
+        return appContextDelegate.getFragmentManagerDelegate();
+    }
+
+    public void addFragment(Fragment fragment) {
+        getFragmentManagerDelegate().addFragment(getFragmentContainerId(), fragment, true);
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        getFragmentManagerDelegate().replaceFragment(getFragmentContainerId(), fragment);
+    }
+
+    public void switchFragment(Fragment fragment) {
+        getFragmentManagerDelegate().switchFragment(getFragmentContainerId(), fragment);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        appContextDelegate.destroy();
+        if (eventEnable())
+            EventWrapper.unregister(this);
+        NetWorkManager.unsubscribe(this);
+    }
+
+    @NonNull
+    @Override
+    public P createPresenter() {
+        return (P) BasePresenter.defalut();
+    }
+
+    @Override
+    public Context getAttachedContext() {
+        return this;
+    }
+
+    @Override
+    public boolean eventEnable() {
+        return appContextDelegate.eventEnable();
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Override
+    public void onEventAsync(Event event) {
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Override
+    public void onEventMainThread(Event event) {
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    @Override
+    public void onEventBackgroundThread(Event event) {
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Override
+    public void onEventPosting(Event event) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        boolean handled = false;
+        List<Fragment> fragments = getFragmentManagerDelegate().fragmentManager.getFragments();
+        if(null != fragments){
+            for(int i=0;i<fragments.size();i++){
+                if(fragments.get(i) instanceof BackPressedHandler){
+                    if(((BackPressedHandler)fragments.get(i)).onBackHandled()){
+                        handled = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(!handled){
+            super.onBackPressed();
+            checkFinishSlef();
+        }
+    }
+
+    public void checkFinishSlef() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0 && finishWhenNoFragment())
+            finish();
+    }
+
+    public boolean finishWhenNoFragment() {
+        return false;
+    }
+
+    /**
+     * 该activity持有的某个fragment调用{@link BaseFragment#onActivityResult(int, int, Intent)}时回调回来
+     * @param bundle
+     * @param resultCode
+     */
+    public void onFragmentResult(Bundle bundle, int resultCode) {
+
+    }
+}
